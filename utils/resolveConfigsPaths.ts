@@ -2,14 +2,13 @@ import { path } from "../deps.ts";
 import { getAllParentDir } from "./getAllParentDir.ts";
 
 
-export function* resolveConfigsPaths() {
+
+export function* resolveConfigsPaths(): Generator<{ ipmFile: URL, ipmFileLock: URL }> {
     const cwd = path.toFileUrl(`${Deno.cwd()}/`)
 
-    yield new URL(`./ipm.yaml`, cwd)
-    yield new URL(`./ipm.yml`, cwd)
+    yield { ipmFile: new URL(`./ipm.yaml`, cwd), ipmFileLock: new URL(`./ipm-lock.yaml`, cwd) }
 
-    for (const p of getAllParentDir(cwd)) {
-        yield new URL(`./ipm.yaml`, p)
-        yield new URL(`./ipm.yml`, p)
+    for (const baseCwd of getAllParentDir(cwd)) {
+        yield { ipmFile: new URL(`./ipm.yaml`, baseCwd), ipmFileLock: new URL(`./ipm-lock.yaml`, baseCwd) }
     }
 }

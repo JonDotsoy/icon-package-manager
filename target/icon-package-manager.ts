@@ -1,15 +1,18 @@
-import { formatOut, iconResource, loadPackageConfig } from "../utils/configSchema.ts";
+import { Config, formatOut, iconResource, loadPackageConfig } from "../utils/config.ts";
 import { parseArgs } from "../utils/parseArgs.ts";
 import { resolveConfigsPaths } from "../utils/resolveConfigsPaths.ts";
 import { loadAgent } from "../utils/getAgents.ts";
-import { createHash, path, dom, camelCase } from "../deps.ts";
+import { createHash, path, dom, camelCase, z } from "../deps.ts";
 import { cacheDir } from "../utils/cache_dir.ts";
+import { IPMFile } from "../utils/ipm-file.ts";
+import { IPMFileLock } from "../utils/ipm-file-lock.ts";
+import { resourceSchema } from "../utils/schemas/resourceSchema.ts";
 
 
 interface T {
     name: string
     url: URL
-    out: URL
+    outDir: URL
     formatOut: formatOut,
 }
 
@@ -84,30 +87,6 @@ class TSXNode {
 const toExt = (formatOut: formatOut) => formatOut === "svg-react" ? '.tsx' : '.svg'
 
 
-async function pullTextResource(resource: URL) {
-    const hash_cache = createHash('md5').update(resource.toString()).toString('hex');
-    const filePathCache = new URL(hash_cache, path.toFileUrl(cacheDir));
-    try {
-        return await Deno.readTextFile(filePathCache)
-    } catch (ex) {
-        if (ex instanceof Deno.errors.NotFound) {
-            console.log(`Download ${resource}`)
-            const agent = await loadAgent(resource)
-
-            if (!agent) throw new TypeError(`Cannot found agent to ${resource}`)
-
-            const svgText = await agent.getSvgIcon(resource);
-
-            console.log(`Write resource cache ${filePathCache}`)
-            await Deno.writeFile(filePathCache, new TextEncoder().encode(svgText))
-
-            return svgText;
-        }
-
-        throw ex;
-    }
-}
-
 // deno-lint-ignore require-await
 async function transformResource(name: string, urL: URL, formatOut: formatOut, svgText: string): Promise<string> {
     if (formatOut === 'svg') return svgText;
@@ -122,7 +101,7 @@ async function transformResource(name: string, urL: URL, formatOut: formatOut, s
         throw new Error('CAnnot found element SVG')
     }
 
-    tsxNode.props = tsxNode.props.filter(prop => !["width", "height"].includes(prop.propName))
+    tsxNode.props = tsxNode.props.filter(prop => !["width", "height", "class"].includes(prop.propName))
     tsxNode.props.push(new TSXAttr("className", `{classNames("aspect-square", className)}`))
     tsxNode.props.push(new TSXAttr("style", `{style}`))
 
@@ -136,47 +115,78 @@ async function transformResource(name: string, urL: URL, formatOut: formatOut, s
         + `export default ${name};\n`
 }
 
-async function pullResource(resource: T) {
-    const text = await pullTextResource(resource.url)
-
-    await Deno.mkdir(new URL('.', resource.out), { recursive: true })
-
-    await Deno.writeFile(resource.out, new TextEncoder().encode(await transformResource(resource.name, resource.url, resource.formatOut, text)))
-
-    return resource
-}
+class PullResource {
+    constructor(
+        readonly ipmFile: IPMFile,
+        readonly impFileLock: IPMFileLock = ipmFile.impFileLock,
+    ) { }
 
 
-async function pullResources(resources: iconResource[], outDir: URL, formatOut: formatOut, exportIndex?: URL) {
-    const results: T[] = []
-    for (const resource of resources) {
-        const res = await pullResource({
-            name: resource.name,
-            url: resource.url,
-            formatOut,
-            out: new URL(`${resource.name}${toExt(formatOut)}`, outDir),
-        });
+    async pullTextResource(resource: URL) {
+        const resourceContent = this.impFileLock.getResource(resource);
+        if (resourceContent) return resourceContent;
 
-        results.push(res);
+        console.log(`Download ${resource}`)
+        const agent = await loadAgent(resource, this.ipmFile.agents)
+
+        if (!agent) throw new TypeError(`Cannot found agent to ${resource}`)
+
+        const svgResult = await agent.getSvgIcon(resource);
+
+        await this.impFileLock.setResource(resource, { integrity: createHash('sha256').update(svgResult.payload).toString('base64'), createdAt: Date.now(), ...svgResult })
+
+        return svgResult;
     }
 
-    if (exportIndex) {
-        
+    async pullResource(resource: T) {
+        const svgResult = await this.pullTextResource(resource.url)
+        const name = camelCase(svgResult.name);
+
+        await Deno.mkdir(resource.outDir, { recursive: true })
+
+        const out = new URL(`${name}${toExt(resource.formatOut)}`, resource.outDir);
+
+        await Deno.writeFile(out, new TextEncoder().encode(await transformResource(name, resource.url, resource.formatOut, svgResult.payload)))
+
+        return resource
+    }
+}
+
+class PullCollectionResource {
+    constructor(
+        readonly ipmFile: IPMFile,
+        readonly pullResource: PullResource = new PullResource(ipmFile),
+    ) { }
+
+    async pullResources(resources: iconResource[], outDir: URL, formatOut: formatOut, _exportIndex?: URL) {
+        const results: T[] = []
+        for (const resource of resources) {
+            const res = await this.pullResource.pullResource({
+                name: resource.name,
+                url: resource.url,
+                formatOut,
+                outDir,
+            });
+
+            results.push(res);
+        }
+
+        await this.ipmFile.impFileLock.saveChanges();
     }
 }
 
 
 async function bin(args: string[]) {
-    const config = await loadPackageConfig(Array.from(resolveConfigsPaths()))
+    const ipmFile = await IPMFile.eachIPMFileFactory(resolveConfigsPaths())
     const argsOptions = parseArgs(args);
 
     if (argsOptions.args[0] === "info") {
-        console.log(config)
+        console.log(ipmFile)
         return
     }
 
     if (argsOptions.args[0] === "pull") {
-        await pullResources(config.icons, config.outDir, config.formatOut, config.indexIcons);
+        await new PullCollectionResource(ipmFile).pullResources(ipmFile.icons, ipmFile.outDir, ipmFile.formatOut);
         return
     }
 }

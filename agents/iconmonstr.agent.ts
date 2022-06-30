@@ -50,7 +50,10 @@ export class IconmonstrAgent {
         const payload = await (await fetch(url.toString())).text();
         const svgUrl = (await parseBodyEntry(payload)).toString();
         const svgPayload = await (await fetch(svgUrl)).text();
-        return svgPayload
+        return {
+            name: url.pathname,
+            payload: svgPayload,
+        }
     }
 }
 
