@@ -1,5 +1,4 @@
 import { YAML } from "../deps.ts";
-import { IPMFile } from "./ipm-file.ts"
 import { ipmFileLockSchema } from "./schemas/ipmFileLockSchema.ts";
 import { resourceSchema } from "./schemas/resourceSchema.ts";
 

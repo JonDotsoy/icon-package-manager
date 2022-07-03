@@ -1,19 +1,19 @@
-import { Config, formatOut, iconResource, loadPackageConfig } from "../utils/config.ts";
+import { formatOutSchema } from "../utils/schemas/formatOutSchema.ts"
 import { parseArgs } from "../utils/parseArgs.ts";
 import { resolveConfigsPaths } from "../utils/resolveConfigsPaths.ts";
 import { loadAgent } from "../utils/getAgents.ts";
-import { createHash, path, dom, camelCase, z } from "../deps.ts";
-import { cacheDir } from "../utils/cache_dir.ts";
+import { createHash, dom, camelCase } from "../deps.ts";
 import { IPMFile } from "../utils/ipm-file.ts";
 import { IPMFileLock } from "../utils/ipm-file-lock.ts";
-import { resourceSchema } from "../utils/schemas/resourceSchema.ts";
+import { iconResourceSchema } from "../utils/schemas/iconResourceSchema.ts";
 
 
 interface T {
-    name: string
+    name?: string
     url: URL
+    out: URL | undefined
     outDir: URL
-    formatOut: formatOut,
+    formatOut: formatOutSchema,
 }
 
 
@@ -84,11 +84,11 @@ class TSXNode {
 }
 
 
-const toExt = (formatOut: formatOut) => formatOut === "svg-react" ? '.tsx' : '.svg'
+const toExt = (formatOut: formatOutSchema) => formatOut === "svg-react" ? '.tsx' : '.svg'
 
 
 // deno-lint-ignore require-await
-async function transformResource(name: string, urL: URL, formatOut: formatOut, svgText: string): Promise<string> {
+async function transformResource(name: string, urL: URL, formatOut: formatOutSchema, svgText: string): Promise<string> {
     if (formatOut === 'svg') return svgText;
 
     const domParsed = new dom.DOMParser().parseFromString(svgText, 'text/html');
@@ -101,7 +101,7 @@ async function transformResource(name: string, urL: URL, formatOut: formatOut, s
         throw new Error('CAnnot found element SVG')
     }
 
-    tsxNode.props = tsxNode.props.filter(prop => !["width", "height", "class"].includes(prop.propName))
+    tsxNode.props = tsxNode.props.filter(prop => !["width", "height", "class", "space", "xlink", "id"].includes(prop.propName))
     tsxNode.props.push(new TSXAttr("className", `{classNames("aspect-square", className)}`))
     tsxNode.props.push(new TSXAttr("style", `{style}`))
 
@@ -109,7 +109,7 @@ async function transformResource(name: string, urL: URL, formatOut: formatOut, s
         + `import classNames from "classnames";\n`
         + `\n\n`
         + `/** @external ${urL} */\n`
-        + `export const ${name}: FC<{className?: string, style?: CSSProperties }> = ({ className, style }) =>\n`
+        + `export const ${name}: FC<{ className?: string, style?: CSSProperties }> = ({ className, style }) =>\n`
         + `${TSXNode.stringify(tsxNode, 1)}\n`
         + `\n\n`
         + `export default ${name};\n`
@@ -140,11 +140,11 @@ class PullResource {
 
     async pullResource(resource: T) {
         const svgResult = await this.pullTextResource(resource.url)
-        const name = camelCase(svgResult.name);
+        const name = camelCase(resource.name ?? svgResult.name);
 
         await Deno.mkdir(resource.outDir, { recursive: true })
 
-        const out = new URL(`${name}${toExt(resource.formatOut)}`, resource.outDir);
+        const out = resource.out ?? new URL(`${name}${toExt(resource.formatOut)}`, resource.outDir);
 
         await Deno.writeFile(out, new TextEncoder().encode(await transformResource(name, resource.url, resource.formatOut, svgResult.payload)))
 
@@ -158,14 +158,15 @@ class PullCollectionResource {
         readonly pullResource: PullResource = new PullResource(ipmFile),
     ) { }
 
-    async pullResources(resources: iconResource[], outDir: URL, formatOut: formatOut, _exportIndex?: URL) {
+    async pullResources(resources: iconResourceSchema[], outDir: URL, formatOut: formatOutSchema, _exportIndex?: URL) {
         const results: T[] = []
         for (const resource of resources) {
             const res = await this.pullResource.pullResource({
                 name: resource.name,
                 url: resource.url,
-                formatOut,
-                outDir,
+                formatOut: resource.formatOut ?? formatOut,
+                outDir: resource.outDir ?? outDir,
+                out: resource.out,
             });
 
             results.push(res);

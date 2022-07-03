@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=http://json-schema.org/draft-07/schema
+type: "object"
+properties:
+    formatOut:
+        enum:
+            - svg-react
+            - svg
+    outDir:
+        type: string
+        format: path
+    icons:
+        type: array
+        items:
+            oneOf:
+                - type: string
+                - type: object
+                  required:
+                      - url
+                      - name
+                  properties:
+                      name:
+                          type: string
+                      url:
+                          type: string
+                      out:
+                          type: string
+                      outDir:
+                          type: string
+                      formatOut:
+                          type: string
+    agents:
+        type: object
+        additionalProperties:
+            type: string

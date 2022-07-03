@@ -7,13 +7,17 @@ export const iconResourceSchema = ({ config_dirname }: { config_dirname: URL }) 
         const url = new URL(e);
         return {
             url,
-            name: camelCase(url.pathname),
+            name: undefined,
+            out: undefined,
+            outDir: undefined,
+            formatOut: undefined,
         }
     }),
     z.object({
         url: z.string().transform(e => new URL(e)),
         name: z.string(),
         out: z.optional(z.string().transform(e => new URL(`${e}`, config_dirname))),
-        formatOut: z.optional(formatOutSchema).default('svg'),
+        outDir: z.optional(z.string().transform(e => new URL(`${e}`, config_dirname))),
+        formatOut: z.optional(formatOutSchema),
     }),
 ]);

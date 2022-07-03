@@ -1,6 +1,4 @@
 import { camelCase, YAML, z } from "../deps.ts";
-import { IPMFile } from "./ipm-file.ts"
-import { IPMFileLock } from "./ipm-file-lock.ts"
 
 
 export type Config = z.TypeOf<typeof configSchema>
@@ -17,13 +15,15 @@ export const iconResource = z.union([
     const url = new URL(e);
     return {
       url,
-      name: camelCase(url.pathname),
+      name: undefined,
+      outDir: undefined,
+      formatOut: undefined
     }
   }),
   z.object({
     url: z.string().transform(e => new URL(e)),
-    name: z.string(),
-    out: z.optional(z.string().transform(e => new URL(`${e}`, config_dirname))),
+    name: z.optional(z.string()),
+    outDir: z.optional(z.string().transform(e => new URL(`${e}`, config_dirname))),
     formatOut: z.optional(formatOut).default('svg'),
   }),
 ])

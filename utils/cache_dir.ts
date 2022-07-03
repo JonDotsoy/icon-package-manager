@@ -1,5 +1,4 @@
+import * as path from "https://deno.land/std/path/mod.ts";
 
-const homeDir = Deno.env.get('HOME');
-export const cacheDir = `${Deno.env.get('IPM_CACHE') ?? `${homeDir}/.ipm_cache`}/`;
+export const cacheDir = path.toFileUrl(`${Deno.env.get('IPM_CACHE') ?? `${Deno.env.get('IPM_CACHE')}/.ipm_cache`}/`);
 Deno.mkdir(cacheDir, { recursive: true });
-
