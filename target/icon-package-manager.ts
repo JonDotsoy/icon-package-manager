@@ -30,6 +30,9 @@ class TSXAttr {
 const normalizeTsxTagNames = (tagName: string): string => {
     switch (tagName) {
         case 'viewbox': return 'viewBox'
+        case 'space': return 'xmlSpace'
+        case 'xlink': return 'xmlnsXlink'
+        case "class": return "className"
     }
     return camelCase(tagName)
 }
@@ -101,8 +104,10 @@ async function transformResource(name: string, urL: URL, formatOut: formatOutSch
         throw new Error('CAnnot found element SVG')
     }
 
-    tsxNode.props = tsxNode.props.filter(prop => !["width", "height", "class", "space", "xlink", "id"].includes(prop.propName))
-    tsxNode.props.push(new TSXAttr("className", `{classNames("aspect-square", className)}`))
+    tsxNode.props = tsxNode.props.filter(prop => !["width", "height", "className", "id"].includes(prop.propName))
+    const prevClassName = tsxNode.props.find(attr => attr.propName === "className")
+    tsxNode.props = tsxNode.props.filter(attr => attr !== prevClassName)
+    tsxNode.props.push(new TSXAttr("className", `{classNames(${prevClassName ? `${prevClassName.propLiteralValue}, ` : ''}"aspect-square", className)}`))
     tsxNode.props.push(new TSXAttr("style", `{style}`))
 
     return `import { FC, CSSProperties } from "react"\n`

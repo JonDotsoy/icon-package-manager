@@ -9,7 +9,7 @@ export class IPMFileLock {
     ) { }
 
     async saveChanges() {
-        await Deno.writeTextFile(this.location, YAML.stringify(this.payload));
+        await Deno.writeTextFile(this.location, YAML.stringify(ipmFileLockSchema.parse(this.payload)));
     }
 
     getResource(resourceUrl: URL): resourceSchema | null {
