@@ -120,7 +120,7 @@ async function transformResource(name: string, urL: URL, formatOut: formatOutSch
         + `export default ${name};\n`
 }
 
-class PullResource {
+export class PullResource {
     constructor(
         readonly ipmFile: IPMFile,
         readonly impFileLock: IPMFileLock = ipmFile.impFileLock,
@@ -157,7 +157,7 @@ class PullResource {
     }
 }
 
-class PullCollectionResource {
+export class PullCollectionResource {
     constructor(
         readonly ipmFile: IPMFile,
         readonly pullResource: PullResource = new PullResource(ipmFile),
@@ -179,24 +179,4 @@ class PullCollectionResource {
 
         await this.ipmFile.impFileLock.saveChanges();
     }
-}
-
-
-async function bin(args: string[]) {
-    const ipmFile = await IPMFile.eachIPMFileFactory(resolveConfigsPaths())
-    const argsOptions = parseArgs(args);
-
-    if (argsOptions.args[0] === "info") {
-        console.log(ipmFile)
-        return
-    }
-
-    if (argsOptions.args[0] === "pull") {
-        await new PullCollectionResource(ipmFile).pullResources(ipmFile.icons, ipmFile.outDir, ipmFile.formatOut);
-        return
-    }
-}
-
-if (import.meta.main) {
-    await bin([...Deno.args])
 }
