@@ -1,6 +1,4 @@
 import { formatOutSchema } from "../utils/schemas/formatOutSchema.ts"
-import { parseArgs } from "../utils/parseArgs.ts";
-import { resolveConfigsPaths } from "../utils/resolveConfigsPaths.ts";
 import { loadAgent } from "../utils/getAgents.ts";
 import { createHash, dom, camelCase } from "../deps.ts";
 import { IPMFile } from "../utils/ipm-file.ts";

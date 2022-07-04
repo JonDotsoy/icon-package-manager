@@ -3,7 +3,6 @@
 // deno-lint-ignore require-await
 export const getAgent = async () => {
   return {
-    // deno-lint-ignore require-await
     getSvgIcon: async (url: URL) => {
       const urlPattern = new URLPattern('*://*/:format/:codeImage/:name')
       const patternMatch = urlPattern.exec(url);

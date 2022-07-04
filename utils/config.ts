@@ -1,4 +1,4 @@
-import { camelCase, YAML, z } from "../deps.ts";
+import { YAML, z } from "../deps.ts";
 
 
 export type Config = z.TypeOf<typeof configSchema>

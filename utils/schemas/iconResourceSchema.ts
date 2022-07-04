@@ -1,4 +1,4 @@
-import { camelCase, z } from "../../deps.ts";
+import { z } from "../../deps.ts";
 import { formatOutSchema } from "./formatOutSchema.ts";
 
 export type iconResourceSchema = z.TypeOf<ReturnType<typeof iconResourceSchema>>
