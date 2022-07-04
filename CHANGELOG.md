@@ -1,6 +1,14 @@
 # Changelog
 
 
+### [0.1.7](https://github.com/JonDotsoy/icon-package-manager/compare/v0.1.6...v0.1.7) (2022-07-04)
+
+
+### Features
+
+* add command init ([5d83541](https://github.com/JonDotsoy/icon-package-manager/commit/5d83541f20f2dcaadff7d0773a62b959c64d6759))
+* add sample to ipm.yaml file ([6cc3f52](https://github.com/JonDotsoy/icon-package-manager/commit/6cc3f5204e02edb94e2fbb12e9083141cccd4654))
+
 ### [0.1.6](https://github.com/JonDotsoy/icon-package-manager/compare/v0.1.5...v0.1.6) (2022-07-04)
 
 ### [0.1.5](https://github.com/JonDotsoy/icon-package-manager/compare/v0.1.4...v0.1.5) (2022-07-04)
