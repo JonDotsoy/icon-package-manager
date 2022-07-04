@@ -37,7 +37,7 @@ export async function getAgent() {
       const body = await cacheOrCall(pathCache, async () => (await fetch(url.toString())).text());
 
       const document = new dom.DOMParser().parseFromString(body, 'text/html');
-      const buttonSelect = document?.querySelector(`[aria-label="${iconName}"][aria-controls="${groupName}-${groupCode}"]`);
+      const buttonSelect = document?.querySelector(`[aria-label="${iconName}"][aria-controls="${iconName}-${groupCode}"]`);
 
       if (!buttonSelect) {
         throw new TypeError(`Not found svg icon`)
