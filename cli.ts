@@ -1,3 +1,4 @@
+import { YAML } from "./deps.ts";
 import { PullCollectionResource } from "./target/icon-package-manager.ts"
 import { IPMFile } from "./utils/ipm-file.ts";
 import { parseArgs } from "./utils/parseArgs.ts";
@@ -16,6 +17,10 @@ export async function bin(args: string[]) {
     if (argsOptions.args[0] === "pull") {
         await new PullCollectionResource(ipmFile).pullResources(ipmFile.icons, ipmFile.outDir, ipmFile.formatOut);
         return
+    }
+    
+    if (argsOptions.args[0] === "init") {
+        return;
     }
 }
 
