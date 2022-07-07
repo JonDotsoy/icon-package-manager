@@ -12,7 +12,7 @@ Usage:
 ipm init           Create a initial ipm.yaml file
 ipm pull           Download all assets and generate the icons files
 
-imp ${import.meta.url}`
+Version ${import.meta.url}`
 
 const seeListCommands = `
 To see a list of supported ipm commands, run:
