@@ -2,6 +2,7 @@ import { PullCollectionResource } from "./target/icon-package-manager.ts"
 import { IPMFile } from "./utils/ipm-file.ts";
 import { parseArgs } from "./utils/parseArgs.ts";
 import { resolveConfigsPaths } from "./utils/resolveConfigsPaths.ts";
+import { version } from "./version.ts"
 
 
 const helpMessage = `
@@ -12,7 +13,7 @@ Usage:
 ipm init           Create a initial ipm.yaml file
 ipm pull           Download all assets and generate the icons files
 
-Version ${import.meta.url}`
+ipm@v${version} (${import.meta.url})`
 
 const seeListCommands = `
 To see a list of supported ipm commands, run:
