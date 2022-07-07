@@ -6,9 +6,8 @@ A Package Manager to SVG Icons.
 
 ## Install
 
-```sh
-deno compile --output=$HOME/.ipm/versions/$IPM_VERSION https://deno.land/x/ipm@$IPM_VERSION/cli.ts
+Run the following in your terminal, then follow the onscreen instructions.
 
-# Add this line in your ~/.bashrc or ~/.zshrc file
-alias ipm=$HOME/.ipm/versions/$IPM_VERSION
+```sh
+curl --proto '=https' https://deno.land/x/ipm@v0.2.2/install.sh | sh
 ```
