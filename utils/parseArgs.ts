@@ -1,6 +1,6 @@
 
 export interface ParseArgsOptions {
-  stopParsingWith?: string | boolean
+  stopParsingWith?: string | false
 }
 
 export interface ArgsOptions {
