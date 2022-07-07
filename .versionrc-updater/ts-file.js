@@ -1,5 +1,9 @@
 
-module.exports.readVersion = function (contents) {
+/**
+ * @param {string} contents 
+ * @returns {string}
+ */
+module.exports.readVersion = function (_contents) {
     return ``
 }
 
@@ -8,6 +12,6 @@ module.exports.readVersion = function (contents) {
  * @param {string} version 
  * @return {string}
  */
-module.exports.writeVersion = function (contents, version) {
+module.exports.writeVersion = function (_contents, version) {
     return `export const version = "${version}";\n`
 }
