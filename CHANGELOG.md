@@ -1,6 +1,13 @@
 # Changelog
 
 
+### [0.1.8](https://github.com/JonDotsoy/icon-package-manager/compare/v0.1.7...v0.1.8) (2022-07-07)
+
+
+### Features
+
+* add dialog help to cli.ts ([66bd08e](https://github.com/JonDotsoy/icon-package-manager/commit/66bd08ef63c0c9ff312a1f808cc56a8b9d19648d))
+
 ### [0.1.7](https://github.com/JonDotsoy/icon-package-manager/compare/v0.1.6...v0.1.7) (2022-07-04)
 
 
