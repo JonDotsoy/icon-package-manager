@@ -1,6 +1,13 @@
 # Changelog
 
 
+### [0.2.3](https://github.com/JonDotsoy/icon-package-manager/compare/v0.2.2...v0.2.3) (2022-07-07)
+
+
+### Features
+
+* update logs to install.sh file ([731270a](https://github.com/JonDotsoy/icon-package-manager/commit/731270a042f4715f0a59b6fa53cbf918bab137f3))
+
 ### [0.2.2](https://github.com/JonDotsoy/icon-package-manager/compare/v0.2.1...v0.2.2) (2022-07-07)
 
 
