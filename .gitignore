@@ -1,3 +1,5 @@
 !target/
 !.versionrc.json
 !ipm.yaml
+!.versionrc-updater
+!.vscode

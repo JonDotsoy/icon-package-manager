@@ -1,4 +1,10 @@
 {
     "$schema": "https://raw.githubusercontent.com/conventional-changelog/conventional-changelog-config-spec/master/versions/2.2.0/schema.json",
-    "header": "# Changelog\n\n"
+    "header": "# Changelog\n\n",
+    "bumpFiles": [
+        {
+            "filename": "version.ts",
+            "updater": ".versionrc-updater/ts-file.js"
+        }
+    ]
 }
