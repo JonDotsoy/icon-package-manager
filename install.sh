@@ -13,4 +13,11 @@ then
     echo ✅ Already IPM v${IPM_VERSION} installed
 else
     deno compile --output=$OUTPUT_BIN https://deno.land/x/ipm@v$IPM_VERSION/cli.ts
+    echo
+    echo ✅ IPM v${IPM_VERSION} installed
+    echo
+    echo Please copy the next line in your shell config file.
+    echo
+    echo   alias ipm="$OUTPUT_BIN"
+    echo
 fi
