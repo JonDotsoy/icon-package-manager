@@ -1,6 +1,14 @@
 # Changelog
 
 
+### [0.1.12](https://github.com/JonDotsoy/icon-package-manager/compare/v0.1.11...v0.1.12) (2022-07-07)
+
+
+### Features
+
+* configure build version ([11214d6](https://github.com/JonDotsoy/icon-package-manager/commit/11214d68edfbf7903d1174ac504c530bfbd7b7fd))
+* initialize version file ([6417b25](https://github.com/JonDotsoy/icon-package-manager/commit/6417b252d3465ddeef9d386a5b58cf55646d31f4))
+
 ### [0.1.11](https://github.com/JonDotsoy/icon-package-manager/compare/v0.1.10...v0.1.11) (2022-07-07)
 
 
