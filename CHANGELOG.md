@@ -1,6 +1,13 @@
 # Changelog
 
 
+### [0.1.11](https://github.com/JonDotsoy/icon-package-manager/compare/v0.1.10...v0.1.11) (2022-07-07)
+
+
+### Features
+
+* update help message ([10f875b](https://github.com/JonDotsoy/icon-package-manager/commit/10f875b1734a5b16de887749ca67f29cb00de6fd))
+
 ### [0.1.10](https://github.com/JonDotsoy/icon-package-manager/compare/v0.1.9...v0.1.10) (2022-07-07)
 
 ### [0.1.9](https://github.com/JonDotsoy/icon-package-manager/compare/v0.1.8...v0.1.9) (2022-07-07)
