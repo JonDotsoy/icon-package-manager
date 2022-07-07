@@ -1,6 +1,13 @@
 # Changelog
 
 
+### [0.1.9](https://github.com/JonDotsoy/icon-package-manager/compare/v0.1.8...v0.1.9) (2022-07-07)
+
+
+### Features
+
+* update cli build match ([1ec28c5](https://github.com/JonDotsoy/icon-package-manager/commit/1ec28c5eb5281e5eecc23bac7d2d94200ae2f808))
+
 ### [0.1.8](https://github.com/JonDotsoy/icon-package-manager/compare/v0.1.7...v0.1.8) (2022-07-07)
 
 
