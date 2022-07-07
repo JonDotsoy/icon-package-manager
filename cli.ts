@@ -25,7 +25,10 @@ class UnknownCommand extends CliError {
 }
 
 export async function bin(args: string[]) {
-    const { args: [command], help } = parseArgs(args);
+    const argsParsed = parseArgs(args);
+    const { command, args: _a, debug } = argsParsed;
+
+    if (debug) console.log(`# Args Parsed => ${Deno.inspect(argsParsed, { colors: true })}`)
 
     if (command === "info") {
         const ipmFile = await IPMFile.eachIPMFileFactory(resolveConfigsPaths())
@@ -44,7 +47,7 @@ export async function bin(args: string[]) {
         return;
     }
 
-    if (help) {
+    if (command === 'help' || command === 'h' || !command) {
         return console.log(helpMessage)
     }
 
