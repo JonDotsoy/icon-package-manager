@@ -1,6 +1,13 @@
 # Changelog
 
 
+### [0.2.2](https://github.com/JonDotsoy/icon-package-manager/compare/v0.2.1...v0.2.2) (2022-07-07)
+
+
+### Features
+
+* add install script ([68ede9f](https://github.com/JonDotsoy/icon-package-manager/commit/68ede9f7550593c0e6d20fdf8b607c8749a039b1))
+
 ### [0.2.1](https://github.com/JonDotsoy/icon-package-manager/compare/v0.2.0...v0.2.1) (2022-07-07)
 
 ## [0.2.0](https://github.com/JonDotsoy/icon-package-manager/compare/v0.1.13...v0.2.0) (2022-07-07)
