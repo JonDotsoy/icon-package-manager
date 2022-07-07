@@ -9,5 +9,5 @@ A Package Manager to SVG Icons.
 Run the following in your terminal, then follow the onscreen instructions.
 
 ```sh
-curl --proto '=https' https://deno.land/x/ipm@v0.2.2/install.sh | sh
+curl --proto '=https' -L https://deno.land/x/ipm/install.sh | sh
 ```
