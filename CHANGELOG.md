@@ -1,6 +1,8 @@
 # Changelog
 
 
+### [0.2.4](https://github.com/JonDotsoy/icon-package-manager/compare/v0.2.3...v0.2.4) (2022-07-07)
+
 ### [0.2.3](https://github.com/JonDotsoy/icon-package-manager/compare/v0.2.2...v0.2.3) (2022-07-07)
 
 
