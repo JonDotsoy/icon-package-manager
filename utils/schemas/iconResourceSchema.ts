@@ -1,10 +1,10 @@
-import { z } from "../../deps.ts";
+import { path, z } from "../../deps.ts";
 import { formatOutSchema } from "./formatOutSchema.ts";
 
 export type iconResourceSchema = z.TypeOf<ReturnType<typeof iconResourceSchema>>
 export const iconResourceSchema = ({ config_dirname }: { config_dirname: URL }) => z.union([
     z.string().transform((e) => {
-        const url = new URL(e);
+        const url = new URL(e, path.toFileUrl(`${Deno.cwd()}/`));
         return {
             url,
             name: undefined,
@@ -14,7 +14,7 @@ export const iconResourceSchema = ({ config_dirname }: { config_dirname: URL }) 
         }
     }),
     z.object({
-        url: z.string().transform(e => new URL(e)),
+        url: z.string().transform(e => new URL(e, path.toFileUrl(`${Deno.cwd()}/`))),
         name: z.string(),
         out: z.optional(z.string().transform(e => new URL(`${e}`, config_dirname))),
         outDir: z.optional(z.string().transform(e => new URL(`${e}`, config_dirname))),

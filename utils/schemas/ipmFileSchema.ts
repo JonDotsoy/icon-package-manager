@@ -21,6 +21,7 @@ export const ipmFileSchema = ({ config_dirname }: { config_dirname: URL }) => {
             { pattern: new URLPattern({ protocol: 'data:', pathname: `image/svg\\+xml\\,*` }), module: new URL(`../../agents/data-image-svg.agent.ts`, import.meta.url) },
             { pattern: new URLPattern({ hostname: 'iconmonstr.com' }), module: new URL(`../../agents/iconmonstr.com.agent.ts`, import.meta.url) },
             { pattern: new URLPattern({ hostname: 'heroicons.com' }), module: new URL(`../../agents/heroicons.com.agent.ts`, import.meta.url) },
+            { pattern: new URLPattern({ protocol: 'file:' }), module: new URL(`../../agents/file.agent.ts`, import.meta.url) },
             { pattern: new URLPattern("https://(www.)?svgrepo.com/svg/*"), module: new URL(`../../agents/svgrepo.com.svg.agent.ts`, import.meta.url) },
         ]),
     });
