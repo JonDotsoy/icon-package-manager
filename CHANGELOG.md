@@ -1,6 +1,13 @@
 # Changelog
 
 
+### [0.2.6](https://github.com/JonDotsoy/icon-package-manager/compare/v0.2.5...v0.2.6) (2022-07-12)
+
+
+### Features
+
+* add support to file agent ([5415cf5](https://github.com/JonDotsoy/icon-package-manager/commit/5415cf56c2a8bc0d2b0af6c30065bdc560bd93d5))
+
 ### [0.2.5](https://github.com/JonDotsoy/icon-package-manager/compare/v0.2.4...v0.2.5) (2022-07-07)
 
 ### [0.2.4](https://github.com/JonDotsoy/icon-package-manager/compare/v0.2.3...v0.2.4) (2022-07-07)
