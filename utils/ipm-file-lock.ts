@@ -1,6 +1,26 @@
-import { YAML } from "../deps.ts";
+import { path, YAML } from "../deps.ts";
 import { ipmFileLockSchema } from "./schemas/ipmFileLockSchema.ts";
 import { resourceSchema } from "./schemas/resourceSchema.ts";
+
+const urlSafe = (location: URL, from: URL) => {
+    const u = new URL(`${location}`)
+
+    u.password = u.password ? '***' : '';
+
+    u.searchParams.forEach((value, key, searchParams) => {
+        if ([
+            "access_token"
+        ].includes(key)) {
+            searchParams.set(key, '***');
+        }
+    })
+
+    if (u.protocol === "file:") {
+        u.pathname = `/$CWD/${path.relative(path.dirname(from.pathname), u.pathname)}`
+    }
+
+    return u;
+}
 
 export class IPMFileLock {
     constructor(
@@ -13,11 +33,11 @@ export class IPMFileLock {
     }
 
     getResource(resourceUrl: URL): resourceSchema | null {
-        return this.payload.resources[`${resourceUrl}`] ?? null;
+        return this.payload.resources[`${urlSafe(resourceUrl, this.location)}`] ?? null;
     }
 
     setResource(resourceUrl: URL, resource: resourceSchema) {
-        this.payload.resources[`${resourceUrl}`] = resource;
+        this.payload.resources[`${urlSafe(resourceUrl, this.location)}`] = resource;
     }
 
     static async load(location: URL) {
