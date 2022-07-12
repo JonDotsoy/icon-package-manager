@@ -1,6 +1,13 @@
 # Changelog
 
 
+### [0.2.7](https://github.com/JonDotsoy/icon-package-manager/compare/v0.2.6...v0.2.7) (2022-07-12)
+
+
+### Features
+
+* rewrite locations in lock file ([0df66d0](https://github.com/JonDotsoy/icon-package-manager/commit/0df66d01a0df350af5acb5b9eb73df07855974bd))
+
 ### [0.2.6](https://github.com/JonDotsoy/icon-package-manager/compare/v0.2.5...v0.2.6) (2022-07-12)
 
 
